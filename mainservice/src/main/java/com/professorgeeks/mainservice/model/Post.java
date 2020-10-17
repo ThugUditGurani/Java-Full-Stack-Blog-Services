@@ -1,17 +1,20 @@
 package com.professorgeeks.mainservice.model;
 
+import com.professorgeeks.mainservice.common.DateModel;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.Instant;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table
+@Table(name = "posts")
 @Getter @Setter
-public class Home {
+public class Post  extends DateModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,14 +26,10 @@ public class Home {
     @Column
     private String content;
     @Column
-    private Instant createdOn;
-    @Column
-    private Instant updatedOn;
-    @Column
     @NotNull
     private String username;
 
-//    @OneToMany
-//    @JoinColumn()
-//    private List<Topic> topicList;
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "post")
+    private List<Topic> topicList = new ArrayList<>();
+
 }
