@@ -25,18 +25,6 @@ public class TopicService {
     @Autowired
     private PostRepository postRepository;
 
-    public void addNewTopicPost(Long postId,TopicRequest topicRequest) {
-
-        postRepository.findById(postId).map(post -> {
-            Topic topic = new Topic();
-            topic.setId(topicRequest.getId());
-            topic.setTitle(topicRequest.getTitleTopic());
-            topic.setContent(topicRequest.getContentTopic());
-            topic.setPost(post);
-           return topicRepository.save(topic);
-        }).orElseThrow(() -> new ResourceNotFoundException("PostId" + postId + "not Found"));
-
-    }
 
     public Page<Topic> getAllTopicsByPostId(Long postId, Pageable pageable) {
         return topicRepository.findByPostId(postId,pageable);
@@ -48,5 +36,17 @@ public class TopicService {
             topicRepository.delete(topic);
             return ResponseEntity.ok().build();
         }).orElseThrow(() -> new ResourceNotFoundException("Topic not found with id "+topicId+" and postId "+postId));
+    }
+
+    public Object addNewTopicPost(Long postId, TopicRequest topicRequest) {
+
+       return postRepository.findById(postId).map(post -> {
+            Topic topic = new Topic();
+            topic.setId(topicRequest.getId());
+            topic.setTitle(topicRequest.getTitleTopic());
+            topic.setContent(topicRequest.getContentTopic());
+            topic.setPost(post);
+            return topicRepository.save(topic);
+        }).orElseThrow(() -> new ResourceNotFoundException("PostId" + postId + "not Found"));
     }
 }

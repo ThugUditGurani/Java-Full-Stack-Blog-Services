@@ -25,7 +25,7 @@ public class PostController {
     }
 
     /*
-    * Adding Post Details and Updating Post Details if Already exits into Database
+    * Adding New Post Details and Updating Post Details if Already exits into Database
     * */
     @PostMapping("/addPost")
     public ResponseEntity addNewPost(@RequestBody PostRequest postRequest){
