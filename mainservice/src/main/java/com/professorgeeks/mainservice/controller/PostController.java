@@ -1,6 +1,7 @@
 package com.professorgeeks.mainservice.controller;
 
 import com.professorgeeks.mainservice.dto.PostRequest;
+import com.professorgeeks.mainservice.model.Post;
 import com.professorgeeks.mainservice.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/professorgeeks")
@@ -20,16 +22,16 @@ public class PostController {
     * Fetching All Post Details Api form Database
     * */
     @GetMapping("/getAllPosts")
-    public ResponseEntity<List<PostRequest>> getAllPostDetails(){
-        return new ResponseEntity<List<PostRequest>>(postService.getAllInfoDetails(),HttpStatus.OK);
+    public ResponseEntity<List<Post>> getAllPostDetails(){
+        return new ResponseEntity<List<Post>>(postService.getAllInfoDetails(),HttpStatus.OK);
     }
 
     /*
     * Adding New Post Details and Updating Post Details if Already exits into Database
     * */
     @PostMapping("/addPost")
-    public ResponseEntity addNewPost(@RequestBody PostRequest postRequest){
-        postService.postNewInfo(postRequest);
+    public ResponseEntity addNewPost(@RequestBody Post post){
+        postService.postNewInfo(post);
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -46,8 +48,8 @@ public class PostController {
     * Fetching particular Posts Details From Database
     * */
     @GetMapping("/getPost/{id}")
-    public ResponseEntity<PostRequest> getPostDetails(@PathVariable @RequestBody Long id){
-        return new ResponseEntity<PostRequest>(postService.getPost(id),HttpStatus.OK);
+    public ResponseEntity<Optional<Post>> getPostDetails(@PathVariable @RequestBody Long id){
+        return new ResponseEntity<Optional<Post>>(postService.getPost(id),HttpStatus.OK);
     }
 
 

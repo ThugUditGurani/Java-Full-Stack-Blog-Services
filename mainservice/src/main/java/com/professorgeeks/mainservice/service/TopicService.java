@@ -32,21 +32,21 @@ public class TopicService {
 
 
     public Object deleteTopic(Long postId, Long topicId) {
-        return topicRepository.findByIdAndPostId(topicId,postId).map(topic -> {
-            topicRepository.delete(topic);
-            return ResponseEntity.ok().build();
-        }).orElseThrow(() -> new ResourceNotFoundException("Topic not found with id "+topicId+" and postId "+postId));
+        Optional<Topic> byIdAndPostId = topicRepository.findByIdAndPostId(topicId, postId);
+        topicRepository.delete(byIdAndPostId.get());
+        return ResponseEntity.ok().build();
     }
 
     public Object addNewTopicPost(Long postId, TopicRequest topicRequest) {
 
-       return postRepository.findById(postId).map(post -> {
-            Topic topic = new Topic();
-            topic.setId(topicRequest.getId());
-            topic.setTitle(topicRequest.getTitleTopic());
-            topic.setContent(topicRequest.getContentTopic());
-            topic.setPost(post);
-            return topicRepository.save(topic);
-        }).orElseThrow(() -> new ResourceNotFoundException("PostId" + postId + "not Found"));
+        Optional<Post> byId = postRepository.findById(postId);
+        Post post1 = byId.get();
+        Topic topic = new Topic();
+        topic.setId(topicRequest.getId());
+        topic.setTitle(topicRequest.getTitleTopic());
+        topic.setContent(topicRequest.getContentTopic());
+        topic.setPost(post1);
+        return topicRepository.save(topic);
+
     }
 }
